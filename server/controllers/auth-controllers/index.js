@@ -89,7 +89,8 @@ const loginUser = async(req,res)=>{
     const token = jwt.sign({
         email : user.email,
         id : user._id,
-        role:user.role
+        role:user.role,
+        userName : user.userName
  },process.env.JWT_SECRET_KEY,{expiresIn:'60m'});
 
     res.cookie('token',token,{httpOnly:true,secure:false}).json({
@@ -98,7 +99,8 @@ const loginUser = async(req,res)=>{
          user:{
             email: user.email,
             role:user.role,
-            id:user._id
+            id:user._id,
+            userName : user.userName
          }
     })
     
