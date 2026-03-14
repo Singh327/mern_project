@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 
 
  
-function CommonForm({formControls , formData, setFormData,onSubmit, buttonText}) {
+function CommonForm({isBtnDisabled,formControls , formData, setFormData,onSubmit, buttonText}) {
 
   function renderInputsbyComponentType(getControlItem) {
      let element = null;
@@ -108,7 +108,7 @@ function CommonForm({formControls , formData, setFormData,onSubmit, buttonText})
                   </div>))
             }
         </div>
-        <Button type="submit" className="mt-2 w-full">{buttonText || 'Submit'}</Button>
+        <Button type="submit" disabled = {isBtnDisabled} className="mt-2 w-full">{buttonText || 'Submit'}</Button>
     </form>
   )
 }
