@@ -93,12 +93,23 @@ const loginUser = async(req,res)=>{
         userName : user.userName
  },process.env.JWT_SECRET_KEY,{expiresIn:'60m'});
 
-    res.cookie('token',token,{httpOnly:true,secure:true}).json({
-        success:true,
-         message:"Logged In successfully",
-         user:{
-            email: user.email,
-            role:user.role,
+    // res.cookie('token',token,{httpOnly:true,secure:true}).json({
+    //     success:true,
+    //      message:"Logged In successfully",
+    //      user:{
+    //         email: user.email,
+    //         role:user.role,
+    //         id:user._id,
+    //         userName : user.userName
+    //      }
+    // })
+    res.status(200).json({
+      success:true,
+      message: "Logged In successfully",
+      token,
+      user:{
+          email: user.email,
+          role:user.role,
             id:user._id,
             userName : user.userName
          }
@@ -128,7 +139,8 @@ const logoutUser = (req,res)=>{
 // auth middleware
 
 const authMiddleware = async(req,res,next)=>{
-  const token = req.cookies.token;
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
   if(!token){
     return res.status(401).json({
       success:false,
