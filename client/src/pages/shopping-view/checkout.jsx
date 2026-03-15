@@ -6,6 +6,7 @@ import CartItemsContent from '../../components/shopping-view/cartItemsContent'
 import { Button } from '../../components/ui/button'
 import {createNewOrder} from '../../store/shop/order-slice'
 import { toast } from 'sonner'
+import { getFeatureImages } from '../../store/common-Slice/index.js'
 function ShoppingCheckout() {
    
   const {cartItems} = useSelector(state=>state.shoppingCart);
@@ -13,6 +14,7 @@ function ShoppingCheckout() {
   const {approvalURL} = useSelector(state=>state.shopOrder);
   const dispatch = useDispatch();
   const [currentSelectedAddress,setCurrentSelectedAddress] = useState(null);
+  
 
   const [isPaymentStart,setIspaymentStart] = useState(false);
    const totalCartAmount = cartItems && cartItems.items && cartItems.items.length > 0 ?
@@ -84,7 +86,7 @@ function ShoppingCheckout() {
   return (
     <div className='flex flex-col '>
         <div className='relative h-[300px] overflow-hidden'>
-          <img src={accountImg} className='h-full w-full object-cover object-center' alt="" />
+          <img src={getFeatureImages && getFeatureImages.length > 0 ? getFeatureImages[0].image : null} className='h-full w-full object-cover object-center' alt="" />
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5'>
             <Address setCurrentSelectedAddress= {setCurrentSelectedAddress} selectedId={currentSelectedAddress?._id}/>
