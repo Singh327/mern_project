@@ -12,6 +12,7 @@ function ShoppingCheckout() {
   const {cartItems} = useSelector(state=>state.shoppingCart);
   const {user} = useSelector(state=>state.auth);
   const {approvalURL} = useSelector(state=>state.shopOrder);
+  const { featureImageList } = useSelector(state => state.commonFeature);
   const dispatch = useDispatch();
   const [currentSelectedAddress,setCurrentSelectedAddress] = useState(null);
   
@@ -82,11 +83,15 @@ function ShoppingCheckout() {
     window.location.href = approvalURL;
    }
    },[approvalURL]);
+
+   useEffect(() => {
+    dispatch(getFeatureImages());
+   }, [dispatch]);
  
   return (
     <div className='flex flex-col '>
         <div className='relative h-[300px] overflow-hidden'>
-          <img src={getFeatureImages && getFeatureImages.length > 0 ? getFeatureImages[0].image : null} className='h-full w-full object-cover object-center' alt="" />
+          <img src={featureImageList && featureImageList.length > 0 ? featureImageList[0]?.image : null} className='h-full w-full object-cover object-center' alt="" />
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5'>
             <Address setCurrentSelectedAddress= {setCurrentSelectedAddress} selectedId={currentSelectedAddress?._id}/>
