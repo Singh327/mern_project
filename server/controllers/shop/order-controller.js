@@ -43,6 +43,7 @@ const createOrder = async (req,res)=>{
        ]
     }
     // creating paypal payment instance
+        console.log('Creating PayPal payment with:', JSON.stringify(create_payment_json, null, 2));
     paypal.payment.create(create_payment_json,async(error,paymentInfo)=>{
         if(error){
             console.log("PAYPAL ERROR:", JSON.stringify(error, null, 2));
