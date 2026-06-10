@@ -10,33 +10,71 @@ const initialState = {
 }
 
 
-export const createNewOrder =  createAsyncThunk('/order/createNewOrder',
-    async(orderData)=>{
-        const response  = await axios.post(`${import.meta.env.VITE_API_URL}/api/shop/order/create`,orderData);
-        return response.data
+export const createNewOrder = createAsyncThunk('/order/createNewOrder',
+    async(orderData, thunkAPI) => {
+        const token = thunkAPI.getState().auth.token;
+        const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/shop/order/create`,
+            orderData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                },
+            }
+        );
+        return response.data;
     }
 )
 
 export const capturePayment = createAsyncThunk('/order/capture',
-    async({payerId,paymentId,orderId})=>{
+    async({payerId,paymentId,orderId},thunkAPI)=>{
+        const token = thunkAPI.getState().auth.token;
           const response  = await axios.post(`${import.meta.env.VITE_API_URL}/api/shop/order/capture`,{
             payerId,paymentId,orderId
-          });
+          },
+        {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        });
         return response.data
     }
 )
 
 export const getAllOrdersByUserId = createAsyncThunk('/order/list',
-    async(userId)=>{
-          const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/order/list/${userId}`
+    async(userId,thunkAPI)=>{
+        const token = thunkAPI.getState().auth.token;
+          const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/order/list/${userId}`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
            );
         return response.data
     }
 )
 
 export const getOrderDetails = createAsyncThunk('/order/details',
-    async(id)=>{
-          const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/order/details/${id}`);
+    async(id,thunkAPI)=>{
+          const token  = thunkAPI.getState().auth.token;
+          const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/order/details/${id}`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
+          );
         return response.data
     }
 )

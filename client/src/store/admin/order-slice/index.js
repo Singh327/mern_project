@@ -6,25 +6,53 @@ const initialState = {
 }
 
 export const getAllOrdersForAdmin = createAsyncThunk('/order/list',
-    async()=>{
-          const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/orders/get`
+    async(_,thunkAPI)=>{
+           const token = thunkAPI.getState().auth.token;
+          const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/orders/get`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
            );
         return response.data
     }
 )
 
 export const getOrderDetailsForAdmin = createAsyncThunk('/order/details',
-    async(id)=>{
-          const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/orders/details/${id}`);
+    async(id,thunkAPI)=>{
+           const token = thunkAPI.getState().auth.token;
+          const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/orders/details/${id}`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
+          );
         return response.data
     }
 )
 
 export const updateOrderStatus = createAsyncThunk('/order/status',
-    async({id,orderStatus})=>{
+    async({id,orderStatus},thunkAPI)=>{
+          const token = thunkAPI.getState().auth.token;
           const response  = await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/orders/update/${id}`,{
             orderStatus
-          });
+          },
+        {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        });
         return response.data
     }
 )

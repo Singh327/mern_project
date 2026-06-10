@@ -18,18 +18,40 @@ import { useDispatch, useSelector } from 'react-redux'
 import PaypalReturnPage from './pages/shopping-view/paypal-return'
 import PaypalCancelPage from './pages/shopping-view/paypal-cancel'
 import PaymentSuccessPage from './pages/shopping-view/paymnet-success'
-import { checkAuth } from './store/auth-Slice'
+import { logout, loginSuccess } from './store/auth-Slice'
 import { useEffect } from 'react'
 import Search from './pages/shopping-view/search'
+import { jwtDecode } from 'jwt-decode'
 
 function App() {
     const {isAuthenticated,user,isLoading} = useSelector(state=>state.auth);
     const dispatch = useDispatch();
     useEffect(() => {
       const token  = JSON.parse(sessionStorage.getItem('token'));
-     dispatch(checkAuth(token));
+      if(!token){
+          dispatch(logout());
+          return;
+      }
      
-    }, [dispatch])
+         try {
+    const decoded = jwtDecode(token);
+
+    if (decoded.exp * 1000 < Date.now()) {
+      sessionStorage.removeItem("token");
+      dispatch(logout());
+    } else {
+      dispatch(loginSuccess({
+        user : decoded,
+        token
+      }));
+    }
+  } catch {
+    sessionStorage.removeItem("token");
+    dispatch(logout());
+  }
+      }
+     
+    , [dispatch])
     
   return (
     <div className="flex flex-col overflow-hidden bg-white">

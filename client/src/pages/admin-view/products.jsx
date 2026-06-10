@@ -51,6 +51,9 @@ function AdminProducts() {
              setopenCreateProductsDialog(false);
              setCurrentEditedId(null);
           }
+          else{
+            toast.error(data?.payload?.message);
+          }
        }) : 
        dispatch(addNewProduct({
         ...formData,
@@ -62,6 +65,9 @@ function AdminProducts() {
              setformData(initialFormData);
              toast.success("Product added successfully");
              setopenCreateProductsDialog(false);
+          }
+          else{
+            toast.error(data?.payload?.message);
           }
        })
   }

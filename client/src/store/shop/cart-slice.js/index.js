@@ -8,9 +8,18 @@ const initialState = {
 }
 
 export const addToCart = createAsyncThunk('cart/addToCart',
-    async({userId,productId,quantity})=>{
+    async({userId,productId,quantity},thunkAPI)=>{
+        const token = thunkAPI.getState().auth.token;
        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/shop/cart/add`,
-        {userId,productId,quantity}
+        {userId,productId,quantity},
+        {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
        );
        return response?.data
     }
@@ -18,8 +27,17 @@ export const addToCart = createAsyncThunk('cart/addToCart',
 
 
 export const fetchCartItems = createAsyncThunk('cart/fetchCartItems',
-    async(userId)=>{
+    async(userId,thunkAPI)=>{
+        const token = thunkAPI.getState().auth.token;
        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/cart/get/${userId}`,
+        {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
   
        );
        return response?.data
@@ -27,18 +45,36 @@ export const fetchCartItems = createAsyncThunk('cart/fetchCartItems',
 )
 
 export const deleteCartItem = createAsyncThunk('cart/deleteCartItem',
-    async({userId,productId})=>{
+    async({userId,productId},thunkAPI)=>{
+        const token = thunkAPI.getState().auth.token;
        const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/shop/cart/${userId}/${productId}`,
-        {userId,productId}
+        {userId,productId},
+        {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
        );
        return response?.data
     }
 )
 
 export const updateCartItemQuantity = createAsyncThunk('cart/updateCartItemQuantity',
-    async({userId,productId,quantity})=>{
+    async({userId,productId,quantity},thunkAPI)=>{
+        const token = thunkAPI.getState().auth.token;
        const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/shop/cart/update-cart`,
-          {userId,productId,quantity}
+          {userId,productId,quantity},
+          {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
        );
        return response?.data
     }

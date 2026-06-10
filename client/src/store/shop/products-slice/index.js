@@ -10,13 +10,22 @@ const initialState  ={
 
 export const fetchAllFilteredProducts = createAsyncThunk(
     '/products/fetchAllProducts',
-    async ({filterParams,sortParams})=>{
+    async ({filterParams,sortParams},thunkAPI)=>{
 
         const query =  new URLSearchParams({
             ...filterParams,
             sortBy : sortParams
         })
+         const token  = thunkAPI.getState().auth.token;
         const result = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/products/get?${query}`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
            
         )
         return result?.data;
@@ -25,10 +34,18 @@ export const fetchAllFilteredProducts = createAsyncThunk(
 
 export const fetchProductDetails = createAsyncThunk(
     '/products/fetchProductDetails',
-    async (id)=>{
+    async (id,thunkAPI)=>{
 
-
+         const token  = thunkAPI.getState().auth.token;
         const result = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/products/get/${id}`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
            
         )
         return result?.data;

@@ -8,10 +8,18 @@ const initialState = {
 
 export const getSearchResults = createAsyncThunk(
     '/search',
-    async (keyword)=>{
-
+    async (keyword,thunkAPI)=>{
+          const token  = thunkAPI.getState().auth.token;
 
         const result = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/search/${keyword}`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
            
         )
         return result?.data;

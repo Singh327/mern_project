@@ -8,10 +8,18 @@ const initialState = {
 
 export const getFeatureImages = createAsyncThunk(
     '/order/getFeatureImages',
-    async ()=>{
+    async (_,thunkAPI)=>{
 
-
+         const token = thunkAPI.getState().auth.token;
         const result = await axios.get(`${import.meta.env.VITE_API_URL}/api/common/feature/get`,
+             {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
            
         )
         return result?.data;
@@ -22,10 +30,18 @@ export const getFeatureImages = createAsyncThunk(
 
 export const addFeatureImage = createAsyncThunk(
     '/order/addFeatureImage',
-    async (image)=>{
-
+    async (image,thunkAPI)=>{
+       const token = thunkAPI.getState().auth.token;
 
         const result = await axios.post(`${import.meta.env.VITE_API_URL}/api/common/feature/add`,{image},
+             {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
            
         )
         return result?.data;

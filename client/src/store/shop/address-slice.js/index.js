@@ -6,31 +6,71 @@ const initialState = {
 }
 
 export const addAddress  = createAsyncThunk('/addresses/add',
-    async(formdata)=>{
+    async(formdata,thunkAPI)=>{
         console.log(formdata);
-        const response  = await axios.post(`${import.meta.env.VITE_API_URL}/api/shop/address/add`,formdata);
+        const token = thunkAPI.getState().auth.token;
+        const response  = await axios.post(`${import.meta.env.VITE_API_URL}/api/shop/address/add`,formdata,
+           {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
+        );
         return response?.data;
     }
     
 )
 
 export const fetchAllAddress = createAsyncThunk('/fetchAllAddress',
-    async(userId)=>{
-         const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/address/get/${userId}`);
+    async(userId,thunkAPI)=>{
+        const token = thunkAPI.getState().auth.token;
+         const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/address/get/${userId}`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
+         );
          return response?.data;
     }
 )
 
 export const editAddress = createAsyncThunk('/editaddress',
-    async({userId,addressId,formdata})=>{
-         const response  = await axios.put(`${import.meta.env.VITE_API_URL}/api/shop/address/update/${userId}/${addressId}`,formdata);
+    async({userId,addressId,formdata},thunkAPI)=>{
+        const token = thunkAPI.getState().auth.token;
+         const response  = await axios.put(`${import.meta.env.VITE_API_URL}/api/shop/address/update/${userId}/${addressId}`,formdata,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
+         );
          return response?.data;
     }
 )
 
 export const deleteAddress = createAsyncThunk('/deleteAddress',
-    async({userId,addressId})=>{
-         const response  = await axios.delete(`${import.meta.env.VITE_API_URL}/api/shop/address/delete/${userId}/${addressId}`);
+    async({userId,addressId,thunkAPI})=>{
+        const token = thunkAPI.getState().auth.token;
+         const response  = await axios.delete(`${import.meta.env.VITE_API_URL}/api/shop/address/delete/${userId}/${addressId}`,
+            {
+            
+            headers : {
+                Authorization : `Bearer ${token}`,
+            'Cache-Control' : 'no-store, no-cache, must-revalidate , proxy-revalidate',
+          
+           }
+        }
+         );
          return response?.data;
     }
 )
